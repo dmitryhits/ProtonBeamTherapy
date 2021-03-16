@@ -1,6 +1,6 @@
 ---
 
-title: module name here
+title: Tools to aid automotizing GATE simulations
 
 
 keywords: fastai
@@ -25,6 +25,52 @@ nb_path: "00_core.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_sensor</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">x_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">z_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">x_loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z_loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                  <span class="n">system</span><span class="o">=</span><span class="s1">&#39;scanner&#39;</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="s1">&#39;Silicon&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function will create a GATE macro for creating a sensor</span>
+<span class="sd">    which in the current implementation is a flat plane perpendicular to beam which is in y direction</span>
+<span class="sd">    thickness dimension is in mm</span>
+<span class="sd">    all other dimensions are in cm</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+
+    <span class="n">lines</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;#sensor</span>
+<span class="s2">    /gate/scanner/daughters/name sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    /gate/</span><span class="si">{</span><span class="n">system</span><span class="si">}</span><span class="s2">/daughters/insert box</span>
+<span class="s2">    /gate/sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">/geometry/setXLength      </span><span class="si">{</span><span class="n">x_length</span><span class="si">}</span><span class="s2"> cm</span>
+<span class="s2">    /gate/sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">/geometry/setYLength      </span><span class="si">{</span><span class="n">thickness</span><span class="si">}</span><span class="s2"> mm</span>
+<span class="s2">    /gate/sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">/geometry/setZLength      </span><span class="si">{</span><span class="n">z_length</span><span class="si">}</span><span class="s2"> cm</span>
+<span class="s2">    /gate/sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">/setMaterial </span><span class="si">{</span><span class="n">material</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    /gate/sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">/placement/setTranslation </span><span class="si">{</span><span class="n">x_loc</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">y_loc</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">z_loc</span><span class="si">}</span><span class="s2"> cm</span>
+<span class="s2">    /gate/sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">/vis/setVisible 1</span>
+<span class="s2">    /gate/sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">/vis/setColor yellow</span>
+<span class="s2">    /gate/systems/</span><span class="si">{</span><span class="n">system</span><span class="si">}</span><span class="s2">/level1/attach sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    /gate/sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">/attachCrystalSD&quot;&quot;&quot;</span>
+    <span class="c1"># lines = lines.split(&#39;\n&#39;)</span>
+    <span class="c1"># print(lines)</span>
+    <span class="c1"># for i, line in enumerate(lines):</span>
+    <span class="c1">#     print(i, line)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;mac/sensor</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">.mac&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+        <span class="c1"># file.write(&#39;\n&#39;.join(lines)+&#39;\n&#39;)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
     {% endraw %}
