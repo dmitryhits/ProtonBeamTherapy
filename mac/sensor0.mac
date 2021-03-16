@@ -1,0 +1,12 @@
+#sensor
+    /gate/scanner/daughters/name sensor0
+    /gate/scanner/daughters/insert box
+    /gate/sensor0/geometry/setXLength      20 cm
+    /gate/sensor0/geometry/setYLength      0.1 mm
+    /gate/sensor0/geometry/setZLength      20 cm
+    /gate/sensor0/setMaterial Silicon
+    /gate/sensor0/placement/setTranslation 0 0 0 cm
+    /gate/sensor0/vis/setVisible 1
+    /gate/sensor0/vis/setColor yellow
+    /gate/systems/scanner/level1/attach sensor0
+    /gate/sensor0/attachCrystalSD
