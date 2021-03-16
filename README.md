@@ -2,15 +2,6 @@
 > This project will have tools to aid a simulation and optimizatin of the proton beam tracker/calorimeter in application for determining the corrections to the proton stopping powers for treatment plannig.
 
 
-```python
-%load_ext autoreload
-%autoreload 2
-```
-
-    The autoreload extension is already loaded. To reload it, use:
-      %reload_ext autoreload
-
-
 ## Prerequisites
 
 To use this package you need to first install:
@@ -34,3 +25,5 @@ Create a sensor:
 ```python
 create_sensor()
 ```
+
+Convert momentum to kinetic energy
