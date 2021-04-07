@@ -2,8 +2,13 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"create_sensor": "00_core.ipynb",
-         "Ek": "00_core.ipynb"}
+index = {"Ek": "00_core.ipynb",
+         "create_sensor": "00_core.ipynb",
+         "create_phantom_layer": "00_core.ipynb",
+         "create_beam": "00_core.ipynb",
+         "create_start_beams": "00_core.ipynb",
+         "create_macro_file": "00_core.ipynb",
+         "run_macro": "00_core.ipynb"}
 
 modules = ["core.py"]
 
