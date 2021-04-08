@@ -6,7 +6,7 @@ index = {"Ek": "00_macro_tools.ipynb",
          "MacroWriter": "00_macro_tools.ipynb",
          "run_macro": "00_macro_tools.ipynb"}
 
-modules = ["core.py"]
+modules = ["macrotools.py"]
 
 doc_url = "https://dmitryhits.github.io/gate_simulation/"
 
