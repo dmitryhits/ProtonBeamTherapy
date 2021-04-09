@@ -25,6 +25,7 @@ class MacroWriter:
         self.geometry_dict = {}
         self.physics_dict = {}
         self.actor_dict = {}
+        self.system_y_loc = 0
 
     def create_sensor(self, n=0, x_length=20, z_length=20, thickness=0.1, x_loc=0, y_loc=0, z_loc=0,
                   system='scanner'):
@@ -36,6 +37,9 @@ class MacroWriter:
         thickness dimension is in mm
         all other dimensions are in cm"""
 
+        # the system location should be the same a the first sensor location
+        if n == 0:
+            self.system_y_loc = y_loc
         geometry_lines = f"""
         #sensor
         /gate/scanner/daughters/name sensor{n}
@@ -48,7 +52,8 @@ class MacroWriter:
         /gate/sensor{n}/vis/setVisible 1
         /gate/sensor{n}/vis/setColor yellow
         /gate/systems/{system}/level1/attach sensor{n}
-        /gate/sensor{n}/attachCrystalSD"""
+        /gate/sensor{n}/attachCrystalSD
+        """
 
         physics_lines = f"""
         """
@@ -56,6 +61,20 @@ class MacroWriter:
         self.geometry_dict[f'sensor{n}'] = geometry_lines
         self.physics_dict[f'sensor{n}'] = physics_lines
 
+    def create_system(self, x_length=20, z_length=20, thickness=10, x_loc=0, y_loc=0, z_loc=0,
+                      system='scanner'):
+        system_lines = f'''
+        /gate/world/daughters/name              {system}
+        /gate/world/daughters/insert            box
+        /gate/scanner/geometry/setXLength      {x_length} cm
+        /gate/scanner/geometry/setYLength      {thickness} cm
+        /gate/scanner/geometry/setZLength      {z_length} cm
+        /gate/scanner/placement/setTranslation {x_loc} {y_loc} {z_loc} cm
+        /gate/scanner/setMaterial Air
+        /gate/scanner/vis/setVisible 1
+        /gate/scanner/vis/setColor cyan
+        '''
+        return system_lines
 
     def create_phantom_layer(self, n=0, x_length=20, z_length=20, thickness=1, x_loc=0, y_loc=0, z_loc=0,
                              material='Water'):
@@ -142,21 +161,10 @@ class MacroWriter:
         /gate/world/geometry/setYLength 50 cm
         /gate/world/geometry/setZLength 50 cm
         /gate/world/setMaterial Air
-        '''
-        system = f'''
-        #system
-        /gate/world/daughters/name              scanner
-        /gate/world/daughters/insert            box
-        /gate/scanner/geometry/setXLength      20 cm
-        /gate/scanner/geometry/setYLength      1 mm
-        /gate/scanner/geometry/setZLength      20 cm
-        /gate/scanner/placement/setTranslation 0.0 0.0 0.0 cm
-        /gate/scanner/setMaterial Air
-        /gate/scanner/vis/setVisible 1
-        /gate/scanner/vis/setColor cyan
-        '''
 
-        geometry_lines += system
+        # system
+        {self.create_system(self.system_y_loc)}
+        '''
 
         for item in self.geometry_dict.values():
             geometry_lines += item
@@ -300,8 +308,11 @@ class MacroWriter:
         exit
         """
         timestamp = strftime("%Y%b%d_%H%M")
-        with open(f'{self.macro}/main_macro{timestamp}.mac', 'w') as f:
+        macro_name = f'{self.macro}/main_macro{timestamp}.mac'
+        with open(macro_name, 'w') as f:
             f.write(lines)
+
+        return macro_name
 
 # Cell
 def run_macro(macroname, log_folder='logs'):

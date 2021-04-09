@@ -4,9 +4,11 @@ __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"Ek": "00_macro_tools.ipynb",
          "MacroWriter": "00_macro_tools.ipynb",
-         "run_macro": "00_macro_tools.ipynb"}
+         "run_macro": "00_macro_tools.ipynb",
+         "get_edep_data": "01_analysis.ipynb"}
 
-modules = ["macrotools.py"]
+modules = ["macrotools.py",
+           "analysis.py"]
 
 doc_url = "https://dmitryhits.github.io/gate_simulation/"
 
