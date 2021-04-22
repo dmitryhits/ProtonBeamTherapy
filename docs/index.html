@@ -76,7 +76,7 @@ nb_path: "index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Create a sensor:</p>
+<p>Initiate a macro writer:</p>
 
 </div>
 </div>
@@ -88,10 +88,310 @@ nb_path: "index.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">create_sensor</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_macro</span> <span class="o">=</span> <span class="n">MacroWriter</span><span class="p">()</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create a macro:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_all</span><span class="p">(</span><span class="n">n_phantom_layers</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">phantom_layer_thickness</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">phantom_material</span> <span class="o">=</span> <span class="s1">&#39;Water&#39;</span><span class="p">,</span> 
+               <span class="n">distance_to_system</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">system_thickness</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_sensors</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sensor_pitch</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">sensor_thickness</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;sets parameters for phantom and system geometries&quot;&quot;&quot;</span>
+    <span class="n">phantom_thickness</span> <span class="o">=</span> <span class="n">n_phantom_layers</span> <span class="o">*</span> <span class="n">phantom_layer_thickness</span>
+    <span class="n">system_thickness</span> <span class="o">=</span> <span class="p">(</span><span class="n">sensor_thickness</span> <span class="o">+</span> <span class="n">sensor_pitch</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_sensors</span>
+    <span class="c1"># initialize an instance of MacroWriter</span>
+    <span class="n">my_macro</span> <span class="o">=</span> <span class="n">MacroWriter</span><span class="p">(</span><span class="n">system_y_loc</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">phantom_thickness</span> <span class="o">-</span> <span class="n">distance_to_system</span><span class="p">,</span> 
+                           <span class="n">system_thickness</span><span class="o">=</span><span class="n">system_thickness</span><span class="p">)</span>
+    <span class="c1"># create phantom layers</span>
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_phantom_layers</span><span class="p">):</span>
+        <span class="n">phantom_material</span> <span class="o">=</span> <span class="s1">&#39;Water&#39;</span>
+        <span class="c1"># set material to Skull for the first and the last layer</span>
+        <span class="k">if</span> <span class="n">layer</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">layer</span> <span class="o">==</span> <span class="n">n_phantom_layers</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span> 
+            <span class="n">phantom_material</span> <span class="o">=</span> <span class="s1">&#39;Skull&#39;</span>
+        <span class="c1"># layers start from 0 and extend in the negative y direction</span>
+        <span class="n">y_loc</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">phantom_layer_thickness</span> <span class="o">*</span> <span class="n">layer</span><span class="p">)</span>
+        <span class="n">my_macro</span><span class="o">.</span><span class="n">create_phantom_layer</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">phantom_layer_thickness</span><span class="p">,</span> <span class="n">y_loc</span><span class="o">=</span><span class="n">y_loc</span><span class="p">,</span>
+                                     <span class="n">material</span><span class="o">=</span><span class="n">phantom_material</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i_sensor</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_sensors</span><span class="p">):</span>
+        <span class="n">my_macro</span><span class="o">.</span><span class="n">create_sensor</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">i_sensor</span><span class="p">,</span> <span class="n">y_loc</span><span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">sensor_pitch</span> <span class="o">+</span> <span class="n">sensor_thickness</span><span class="p">)</span> <span class="o">*</span> <span class="n">i_sensor</span><span class="p">,</span> 
+                               <span class="n">thickness</span><span class="o">=</span><span class="n">sensor_thickness</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">my_macro</span><span class="o">.</span><span class="n">create_macro_file</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">main_macro</span><span class="p">,</span> <span class="n">output_root</span> <span class="o">=</span> <span class="n">create_all</span><span class="p">(</span><span class="n">n_sensors</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>system thickness: 3.0
+y location of sensor 0 is: 1.25
+system created with: thickness: 3.0 at loc: -6
+system thickness: 3.0
+y location of sensor 1 is: 0.25
+system thickness: 3.0
+y location of sensor 2 is: -0.75
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">run_macro</span><span class="p">(</span><span class="n">main_macro</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-error-on-the-mean-versus-sensor-thickness">The error on the mean versus sensor thickness<a class="anchor-link" href="#The-error-on-the-mean-versus-sensor-thickness"> </a></h2><p>Sensor material is silicon.
+The mean is the trimmed mean the upper limit is twice the standard deviation from the untrimmed mean.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tm</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">etm</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">thicknesses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">thicknesses</span><span class="p">:</span>
+    <span class="n">main_macro</span><span class="p">,</span> <span class="n">output_root</span> <span class="o">=</span> <span class="n">create_all</span><span class="p">(</span><span class="n">sensor_thickness</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">run_macro</span><span class="p">(</span><span class="n">main_macro</span><span class="p">)</span>
+    <span class="n">root_hits_file</span> <span class="o">=</span> <span class="n">output_root</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">edep</span> <span class="o">=</span> <span class="n">get_edep_data</span><span class="p">(</span><span class="n">root_hits_file</span><span class="p">)</span>
+    <span class="c1"># check that edep exists</span>
+    <span class="k">if</span> <span class="n">edep</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">tm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">tmean</span><span class="p">(</span><span class="n">edep</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="p">(</span><span class="n">edep</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">edep</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">edep</span><span class="p">))))</span>
+        <span class="n">etm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">tsem</span><span class="p">(</span><span class="n">edep</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="p">(</span><span class="n">edep</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">edep</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">edep</span><span class="p">))))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No result for point </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="c1"># print(f&#39;Trimmed mean {round(tm, 2)}, Error on trimmed mean: {round(etm, 2)}, SNR: {round(tm/etm, 2)}&#39;)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">thicknesses</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tm</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">etm</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.collections.PathCollection at 0x7fa2b2110ac0&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">csv</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">,</span> <span class="s2">&quot;trimmed mean&quot;</span><span class="p">,</span> <span class="s2">&quot;error_on_trimmed_mean&quot;</span><span class="p">]</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;thickness.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_out</span><span class="p">:</span>
+    <span class="n">f_writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f_out</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">lineterminator</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f_writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">f_writer</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">thicknesses</span><span class="p">,</span> <span class="n">tm</span><span class="p">,</span> <span class="n">etm</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+<span class="n">thickness_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;thickness.csv&#39;</span><span class="p">)</span>
+<span class="c1"># thickness_df.head()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">thickness_df</span><span class="p">[</span><span class="s1">&#39;thickness&#39;</span><span class="p">],</span> <span class="n">thickness_df</span><span class="p">[</span><span class="s1">&#39;trimmed mean&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">thickness_df</span><span class="p">[</span><span class="s1">&#39;error_on_trimmed_mean&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.collections.PathCollection at 0x7fa2963e2f40&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">edep</span><span class="p">)</span>
+<span class="n">em</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">sem</span><span class="p">(</span><span class="n">edep</span><span class="p">)</span>
+<span class="n">tm</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">tmean</span><span class="p">(</span><span class="n">edep</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="p">(</span><span class="n">edep</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">edep</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">edep</span><span class="p">)))</span>
+<span class="n">tm_p</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">tmean</span><span class="p">(</span><span class="n">edep</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="p">(</span><span class="n">edep</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">edep</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">edep</span><span class="p">)</span> <span class="o">+</span> <span class="n">em</span><span class="p">))</span>
+<span class="n">tm_m</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">tmean</span><span class="p">(</span><span class="n">edep</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="p">(</span><span class="n">edep</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">edep</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">edep</span><span class="p">)</span> <span class="o">-</span> <span class="n">em</span><span class="p">))</span>
+<span class="n">etm</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">tsem</span><span class="p">(</span><span class="n">edep</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="p">(</span><span class="n">edep</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">edep</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">edep</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Mean:        </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">,       Error on mean: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">em</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">, SNR: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">em</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Trimmed mean </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">tm</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">, Error on trimmed mean: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">etm</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">, SNR: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">tm</span><span class="o">/</span><span class="n">etm</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Trimmed mean upper </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">tm_p</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">, Trimmed mean lower </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">tm_m</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> difference: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">tm_p</span> <span class="o">-</span> <span class="n">tm_m</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">, SNR: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">tm</span><span class="o">/</span><span class="p">(</span><span class="n">tm_p</span> <span class="o">-</span> <span class="n">tm_m</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1">#print(stats.mode(np.round(edep, 0)))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Mean:        181.66000366210938,       Error on mean: 2.4, SNR: 75.55
+Trimmed mean 161.17, Error on trimmed mean: 0.66, SNR: 242.78
+Trimmed mean upper 161.22, Trimmed mean lower 161.17 difference: 0.05, SNR: 3146.49
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -115,7 +415,7 @@ $$E_k = \sqrt{M^2  + p^2} - M$$
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The kinetic energy of 2 GeV/c proton is </span><span class="si">{</span><span class="n">Ek</span><span class="p">(</span><span class="mi">938</span><span class="p">,</span><span class="mi">2000</span><span class="p">)</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> MeV&#39;</span><span class="p">,</span> <span class="ow">and</span> <span class="n">of</span> <span class="mi">8</span> <span class="n">GeV</span><span class="o">/</span><span class="n">c</span> <span class="n">proton</span> <span class="ow">is</span> <span class="p">{</span><span class="n">Ek</span><span class="p">(</span><span class="mi">938</span><span class="p">,</span><span class="mi">8000</span><span class="p">):</span><span class="o">.</span><span class="mi">0</span><span class="n">f</span><span class="p">}</span> <span class="n">MeV</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The kinetic energy of 2 GeV/c proton is </span><span class="si">{</span><span class="n">Ek</span><span class="p">(</span><span class="mi">938</span><span class="p">,</span><span class="mi">2000</span><span class="p">)</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> MeV&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -128,7 +428,39 @@ $$E_k = \sqrt{M^2  + p^2} - M$$
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>The kinetic energy of 2 GeV/c proton is 1271 MeV, and of 8 GeV/c proton is 7117 MeV
+<pre>The kinetic energy of 2 GeV/c proton is 1271 MeV
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls mac
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>my_proton_beam.mac sensor1.mac        visu.mac
+sensor0.mac        sensor2.mac
 </pre>
 </div>
 </div>

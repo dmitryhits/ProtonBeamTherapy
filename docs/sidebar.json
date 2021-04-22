@@ -1,6 +1,8 @@
 {
   "gate_simulation": {
     "Overview": "/",
-    "Tools to aid automotizing GATE simulations": "core.html"
+    "Tools to create macros for GATE simulations": "macro_tools.html",
+    "Tools to analyze the results of Gate simulations": "analysis.html",
+    "Various scanners": "scanners.html"
   }
 }

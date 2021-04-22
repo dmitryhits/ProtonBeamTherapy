@@ -10,8 +10,14 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: Tools to aid automotizing GATE simulations
-      url: core.html
+      title: Tools to create macros for GATE simulations
+      url: macro_tools.html
+    - output: web,pdf
+      title: Tools to analyze the results of Gate simulations
+      url: analysis.html
+    - output: web,pdf
+      title: Various scanners
+      url: scanners.html
     output: web
     title: gate_simulation
   output: web
