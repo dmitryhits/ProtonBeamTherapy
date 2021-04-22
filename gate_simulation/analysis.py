@@ -13,7 +13,7 @@ import numpy as np
 import math
 from scipy import stats
 from scipy.stats import rv_continuous
-import pylandau
+# import pylandau
 
 
 # Cell
