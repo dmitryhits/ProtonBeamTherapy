@@ -1,6 +1,8 @@
 # Simulation of the proton beam tracker/calorimeter
-> This project will have tools to aid a simulation and optimizatin of the proton beam tracker/calorimeter in application for determining the corrections to the proton stopping powers for treatment plannig.
+> This project will have tools to aid a simulation and optimizatin of the proton beam tracker/calorimeter in application for determining the corrections to the proton stopping powers for treatment planning.
 
+
+![image.png](media/gate_simulation.png "Gate Simulation")
 
 ## Prerequisites
 
@@ -105,7 +107,7 @@ plt.scatter(thicknesses, np.array(tm)/np.array(etm))
 
 
 
-![png](docs/images/output_13_1.png)
+![png](docs/images/output_14_1.png)
 
 
 ```python
@@ -132,7 +134,7 @@ plt.scatter(thickness_df['thickness'], thickness_df['trimmed mean']/thickness_df
 
 
 
-![png](docs/images/output_15_1.png)
+![png](docs/images/output_16_1.png)
 
 
 ```python
