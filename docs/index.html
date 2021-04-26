@@ -107,105 +107,6 @@ nb_path: "index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Create a macro:</p>
-
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_all</span><span class="p">(</span><span class="n">n_phantom_layers</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">phantom_layer_thickness</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">phantom_material</span> <span class="o">=</span> <span class="s1">&#39;Water&#39;</span><span class="p">,</span> 
-               <span class="n">distance_to_system</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">system_thickness</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_sensors</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sensor_pitch</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">sensor_thickness</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;sets parameters for phantom and system geometries&quot;&quot;&quot;</span>
-    <span class="n">phantom_thickness</span> <span class="o">=</span> <span class="n">n_phantom_layers</span> <span class="o">*</span> <span class="n">phantom_layer_thickness</span>
-    <span class="n">system_thickness</span> <span class="o">=</span> <span class="p">(</span><span class="n">sensor_thickness</span> <span class="o">+</span> <span class="n">sensor_pitch</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_sensors</span>
-    <span class="c1"># initialize an instance of MacroWriter</span>
-    <span class="n">my_macro</span> <span class="o">=</span> <span class="n">MacroWriter</span><span class="p">(</span><span class="n">system_y_loc</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">phantom_thickness</span> <span class="o">-</span> <span class="n">distance_to_system</span><span class="p">,</span> 
-                           <span class="n">system_thickness</span><span class="o">=</span><span class="n">system_thickness</span><span class="p">)</span>
-    <span class="c1"># create phantom layers</span>
-    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_phantom_layers</span><span class="p">):</span>
-        <span class="n">phantom_material</span> <span class="o">=</span> <span class="s1">&#39;Water&#39;</span>
-        <span class="c1"># set material to Skull for the first and the last layer</span>
-        <span class="k">if</span> <span class="n">layer</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">layer</span> <span class="o">==</span> <span class="n">n_phantom_layers</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span> 
-            <span class="n">phantom_material</span> <span class="o">=</span> <span class="s1">&#39;Skull&#39;</span>
-        <span class="c1"># layers start from 0 and extend in the negative y direction</span>
-        <span class="n">y_loc</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">phantom_layer_thickness</span> <span class="o">*</span> <span class="n">layer</span><span class="p">)</span>
-        <span class="n">my_macro</span><span class="o">.</span><span class="n">create_phantom_layer</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">phantom_layer_thickness</span><span class="p">,</span> <span class="n">y_loc</span><span class="o">=</span><span class="n">y_loc</span><span class="p">,</span>
-                                     <span class="n">material</span><span class="o">=</span><span class="n">phantom_material</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i_sensor</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_sensors</span><span class="p">):</span>
-        <span class="n">my_macro</span><span class="o">.</span><span class="n">create_sensor</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">i_sensor</span><span class="p">,</span> <span class="n">y_loc</span><span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">sensor_pitch</span> <span class="o">+</span> <span class="n">sensor_thickness</span><span class="p">)</span> <span class="o">*</span> <span class="n">i_sensor</span><span class="p">,</span> 
-                               <span class="n">thickness</span><span class="o">=</span><span class="n">sensor_thickness</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">my_macro</span><span class="o">.</span><span class="n">create_macro_file</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">main_macro</span><span class="p">,</span> <span class="n">output_root</span> <span class="o">=</span> <span class="n">create_all</span><span class="p">(</span><span class="n">n_sensors</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>system thickness: 3.0
-y location of sensor 0 is: 1.25
-system created with: thickness: 3.0 at loc: -6
-system thickness: 3.0
-y location of sensor 1 is: 0.25
-system thickness: 3.0
-y location of sensor 2 is: -0.75
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">run_macro</span><span class="p">(</span><span class="n">main_macro</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="The-error-on-the-mean-versus-sensor-thickness">The error on the mean versus sensor thickness<a class="anchor-link" href="#The-error-on-the-mean-versus-sensor-thickness"> </a></h2><p>Sensor material is silicon.
 The mean is the trimmed mean the upper limit is twice the standard deviation from the untrimmed mean.</p>
 
@@ -243,6 +144,13 @@ The mean is the trimmed mean the upper limit is twice the standard deviation fro
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>5 phatom layers each 1 cm thick, the two outer layers had skull as their material, the 3 inner ones had water as the material. The beam was 250 MeV proton pencil beam. The sensor thickness was varied between 20 and 1000 $\mu$m</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -289,6 +197,20 @@ The mean is the trimmed mean the upper limit is twice the standard deviation fro
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next two cells show some practice with saving and reading back csv files.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -359,6 +281,20 @@ The mean is the trimmed mean the upper limit is twice the standard deviation fro
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Study of the trimmed mean. I have checked that the error on the trimmed mean is larger than the error arising from uncertainty on the upper trim value. The upper trim value of 2 standard deviation from the untrimmed mean seems to give a reasonable result.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -407,6 +343,13 @@ Trimmed mean upper 161.22, Trimmed mean lower 161.17 difference: 0.05, SNR: 3146
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Recalculating the kinetic energy $E_k$ of the  particle mass  $M$ from its momentum $p$  according to:
 {% raw %}
 $$E_k = \sqrt{M^2  + p^2} - M$$
@@ -436,38 +379,6 @@ $$E_k = \sqrt{M^2  + p^2} - M$$
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>The kinetic energy of 2 GeV/c proton is 1271 MeV
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls mac
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>my_proton_beam.mac sensor1.mac        visu.mac
-sensor0.mac        sensor2.mac
 </pre>
 </div>
 </div>

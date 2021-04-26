@@ -28,50 +28,6 @@ Initiate a macro writer:
 test_macro = MacroWriter()
 ```
 
-Create a macro:
-
-```python
-def create_all(n_phantom_layers = 5, phantom_layer_thickness = 1, phantom_material = 'Water', 
-               distance_to_system = 1, system_thickness = 1, n_sensors = 1, sensor_pitch = 0.5, sensor_thickness=0.5):
-    """sets parameters for phantom and system geometries"""
-    phantom_thickness = n_phantom_layers * phantom_layer_thickness
-    system_thickness = (sensor_thickness + sensor_pitch) * n_sensors
-    # initialize an instance of MacroWriter
-    my_macro = MacroWriter(system_y_loc=(-1)*phantom_thickness - distance_to_system, 
-                           system_thickness=system_thickness)
-    # create phantom layers
-    for layer in range(n_phantom_layers):
-        phantom_material = 'Water'
-        # set material to Skull for the first and the last layer
-        if layer == 0 or layer == n_phantom_layers - 1: 
-            phantom_material = 'Skull'
-        # layers start from 0 and extend in the negative y direction
-        y_loc = (-1) * (phantom_layer_thickness * layer)
-        my_macro.create_phantom_layer(n=layer, thickness=phantom_layer_thickness, y_loc=y_loc,
-                                     material=phantom_material)
-    for i_sensor in range(n_sensors):
-        my_macro.create_sensor(n=i_sensor, y_loc= -(sensor_pitch + sensor_thickness) * i_sensor, 
-                               thickness=sensor_thickness)
-    return my_macro.create_macro_file()
-```
-
-```python
-main_macro, output_root = create_all(n_sensors=3)
-```
-
-    system thickness: 3.0
-    y location of sensor 0 is: 1.25
-    system created with: thickness: 3.0 at loc: -6
-    system thickness: 3.0
-    y location of sensor 1 is: 0.25
-    system thickness: 3.0
-    y location of sensor 2 is: -0.75
-
-
-```python
-run_macro(main_macro)
-```
-
 ## The error on the mean versus sensor thickness
 Sensor material is silicon.
 The mean is the trimmed mean the upper limit is twice the standard deviation from the untrimmed mean.
@@ -94,6 +50,8 @@ for t in thicknesses:
         # print(f'Trimmed mean {round(tm, 2)}, Error on trimmed mean: {round(etm, 2)}, SNR: {round(tm/etm, 2)}')
 ```
 
+5 phatom layers each 1 cm thick, the two outer layers had skull as their material, the 3 inner ones had water as the material. The beam was 250 MeV proton pencil beam. The sensor thickness was varied between 20 and 1000 $\mu$m
+
 ```python
 import matplotlib.pyplot as plt
 plt.scatter(thicknesses, np.array(tm)/np.array(etm))
@@ -107,8 +65,12 @@ plt.scatter(thicknesses, np.array(tm)/np.array(etm))
 
 
 
-![png](docs/images/output_14_1.png)
+![png](docs/images/output_11_1.png)
 
+
+---
+
+Next two cells show some practice with saving and reading back csv files.
 
 ```python
 import csv
@@ -134,8 +96,12 @@ plt.scatter(thickness_df['thickness'], thickness_df['trimmed mean']/thickness_df
 
 
 
-![png](docs/images/output_16_1.png)
+![png](docs/images/output_15_1.png)
 
+
+---
+
+Study of the trimmed mean. I have checked that the error on the trimmed mean is larger than the error arising from uncertainty on the upper trim value. The upper trim value of 2 standard deviation from the untrimmed mean seems to give a reasonable result.
 
 ```python
 import numpy as np
@@ -159,6 +125,8 @@ print(f'Trimmed mean upper {round(tm_p, 2)}, Trimmed mean lower {round(tm_m, 2)}
     Trimmed mean upper 161.22, Trimmed mean lower 161.17 difference: 0.05, SNR: 3146.49
 
 
+---
+
 Recalculating the kinetic energy $E_k$ of the  particle mass  $M$ from its momentum $p$  according to:
 {% raw %}
 $$E_k = \sqrt{M^2  + p^2} - M$$
@@ -169,12 +137,4 @@ print(f'The kinetic energy of 2 GeV/c proton is {Ek(938,2000):.0f} MeV')
 ```
 
     The kinetic energy of 2 GeV/c proton is 1271 MeV
-
-
-```python
-!ls mac
-```
-
-    my_proton_beam.mac sensor1.mac        visu.mac
-    sensor0.mac        sensor2.mac
 
