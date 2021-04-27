@@ -34,14 +34,16 @@ The mean is the trimmed mean the upper limit is twice the standard deviation fro
 
 ```python
 import numpy as np
+from scipy import stats
+
 tm = []
 etm = []
-thicknesses = np.linspace(0.02, 1.0)
+thicknesses = np.linspace(0.1, 1.0, 10)
 for t in thicknesses:
     main_macro, output_root = create_all(sensor_thickness=t)
     run_macro(main_macro)
     root_hits_file = output_root['hits'][0]
-    edep = get_edep_data(root_hits_file)
+    edep = get_edep_data(get_df_subentry2(root_hits_file), sensor=0)
     # check that edep exists
     if edep.any():
         tm.append(stats.tmean(edep, limits=(edep.min(),np.mean(edep) + 2 * np.std(edep))))
@@ -51,43 +53,72 @@ for t in thicknesses:
         # print(f'Trimmed mean {round(tm, 2)}, Error on trimmed mean: {round(etm, 2)}, SNR: {round(tm/etm, 2)}')
 ```
 
+    system thickness: 0.6
+    y location of sensor 0 is: 0.25
+    system created with: thickness: 0.6 at loc: -21
+    system thickness: 0.7
+    y location of sensor 0 is: 0.24999999999999997
+    system created with: thickness: 0.7 at loc: -21
+    system thickness: 0.8
+    y location of sensor 0 is: 0.25
+    system created with: thickness: 0.8 at loc: -21
+    system thickness: 0.9
+    y location of sensor 0 is: 0.25
+    system created with: thickness: 0.9 at loc: -21
+    system thickness: 1.0
+    y location of sensor 0 is: 0.25
+    system created with: thickness: 1.0 at loc: -21
+    system thickness: 1.1
+    y location of sensor 0 is: 0.25000000000000006
+    system created with: thickness: 1.1 at loc: -21
+    system thickness: 1.2000000000000002
+    y location of sensor 0 is: 0.25000000000000006
+    system created with: thickness: 1.2000000000000002 at loc: -21
+    system thickness: 1.3
+    y location of sensor 0 is: 0.25
+    system created with: thickness: 1.3 at loc: -21
+    system thickness: 1.4
+    y location of sensor 0 is: 0.24999999999999994
+    system created with: thickness: 1.4 at loc: -21
+    system thickness: 1.5
+    y location of sensor 0 is: 0.25
+    system created with: thickness: 1.5 at loc: -21
 
-    ---------------------------------------------------------------------------
 
-    NameError                                 Traceback (most recent call last)
-
-    <ipython-input-5-2a7ddd594455> in <module>
-          1 tm = []
-          2 etm = []
-    ----> 3 thicknesses = np.linspace(0.02, 1.0)
-          4 for t in thicknesses:
-          5     main_macro, output_root = create_all(sensor_thickness=t)
-
-
-    NameError: name 'np' is not defined
-
-
-5 phatom layers each 1 cm thick, the two outer layers had skull as their material, the 3 inner ones had water as the material. The beam was 250 MeV proton pencil beam. The sensor thickness was varied between 20 and 1000 $\mu$m
+20 phatom layers each 1 cm thick, the two outer layers had skull as their material, the 18 inner ones have water as the material. The beam was 250 MeV proton pencil beam. The sensor thickness was varied between 100 and 1000 $\mu$m
 
 ```python
 import matplotlib.pyplot as plt
 plt.scatter(thicknesses, np.array(tm)/np.array(etm))
 ```
 
+
+
+
+    <matplotlib.collections.PathCollection at 0x7fa760ce1d00>
+
+
+
+
+![png](docs/images/output_11_1.png)
+
+
 ---
 
 ### Save the data to and read them back from csv
 
-Next two cells show some practice with saving and reading back csv files.
+save the above example with 20 phantom layers
 
 ```python
 import csv
 columns = ["thickness", "trimmed mean", "error_on_trimmed_mean"]
-with open('thickness.csv', 'w', encoding='utf-8') as f_out:
+with open('thickness_20.csv', 'w', encoding='utf-8') as f_out:
     f_writer = csv.writer(f_out, delimiter=',', lineterminator='\n')
     f_writer.writerow(columns)
     f_writer.writerows(zip(thicknesses, tm, etm))
 ```
+
+Read back an earlier result with 5 phatom layers each 1 cm thick, the two outer layers had skull as their material, the 3 inner ones have water as the material. The beam the same as in the above example 250 MeV proton pencil beam. The sensor thickness was varied between 20 and 1000 $\mu$m in 20 $\mu$m steps
 
 ```python
 import pandas
@@ -96,14 +127,22 @@ thickness_df = pandas.read_csv('thickness.csv')
 plt.scatter(thickness_df['thickness'], thickness_df['trimmed mean']/thickness_df['error_on_trimmed_mean'])
 ```
 
+
+
+
+    <matplotlib.collections.PathCollection at 0x7fa747cba040>
+
+
+
+
+![png](docs/images/output_17_1.png)
+
+
 ---
 
 Study of the trimmed mean. I have checked that the error on the trimmed mean is larger than the error arising from uncertainty on the upper trim value. The upper trim value of 2 standard deviation from the untrimmed mean seems to give a reasonable result.
 
 ```python
-import numpy as np
-from scipy import stats
-
 m = np.mean(edep)
 em = stats.sem(edep)
 tm = stats.tmean(edep, limits=(edep.min(),np.mean(edep) + 2 * np.std(edep)))
@@ -116,6 +155,11 @@ print(f'Trimmed mean upper {round(tm_p, 2)}, Trimmed mean lower {round(tm_m, 2)}
 
 #print(stats.mode(np.round(edep, 0)))
 ```
+
+    Mean:        1152.969970703125,       Error on mean: 11.57, SNR: 99.67
+    Trimmed mean 1047.13, Error on trimmed mean: 2.89, SNR: 362.09
+    Trimmed mean upper 1047.39, Trimmed mean lower 1046.61 difference: 0.78, SNR: 1338.37
+
 
 ---
 
