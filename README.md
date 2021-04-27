@@ -33,6 +33,7 @@ Sensor material is silicon.
 The mean is the trimmed mean the upper limit is twice the standard deviation from the untrimmed mean.
 
 ```python
+import numpy as np
 tm = []
 etm = []
 thicknesses = np.linspace(0.02, 1.0)
@@ -50,23 +51,28 @@ for t in thicknesses:
         # print(f'Trimmed mean {round(tm, 2)}, Error on trimmed mean: {round(etm, 2)}, SNR: {round(tm/etm, 2)}')
 ```
 
+
+    ---------------------------------------------------------------------------
+
+    NameError                                 Traceback (most recent call last)
+
+    <ipython-input-5-2a7ddd594455> in <module>
+          1 tm = []
+          2 etm = []
+    ----> 3 thicknesses = np.linspace(0.02, 1.0)
+          4 for t in thicknesses:
+          5     main_macro, output_root = create_all(sensor_thickness=t)
+
+
+    NameError: name 'np' is not defined
+
+
 5 phatom layers each 1 cm thick, the two outer layers had skull as their material, the 3 inner ones had water as the material. The beam was 250 MeV proton pencil beam. The sensor thickness was varied between 20 and 1000 $\mu$m
 
 ```python
 import matplotlib.pyplot as plt
 plt.scatter(thicknesses, np.array(tm)/np.array(etm))
 ```
-
-
-
-
-    <matplotlib.collections.PathCollection at 0x7fa2b2110ac0>
-
-
-
-
-![png](docs/images/output_11_1.png)
-
 
 ---
 
@@ -90,17 +96,6 @@ thickness_df = pandas.read_csv('thickness.csv')
 plt.scatter(thickness_df['thickness'], thickness_df['trimmed mean']/thickness_df['error_on_trimmed_mean'])
 ```
 
-
-
-
-    <matplotlib.collections.PathCollection at 0x7fa2963e2f40>
-
-
-
-
-![png](docs/images/output_16_1.png)
-
-
 ---
 
 Study of the trimmed mean. I have checked that the error on the trimmed mean is larger than the error arising from uncertainty on the upper trim value. The upper trim value of 2 standard deviation from the untrimmed mean seems to give a reasonable result.
@@ -122,11 +117,6 @@ print(f'Trimmed mean upper {round(tm_p, 2)}, Trimmed mean lower {round(tm_m, 2)}
 #print(stats.mode(np.round(edep, 0)))
 ```
 
-    Mean:        181.66000366210938,       Error on mean: 2.4, SNR: 75.55
-    Trimmed mean 161.17, Error on trimmed mean: 0.66, SNR: 242.78
-    Trimmed mean upper 161.22, Trimmed mean lower 161.17 difference: 0.05, SNR: 3146.49
-
-
 ---
 
 ## Kinetic energy from momentum
@@ -139,8 +129,5 @@ $$E_k = \sqrt{M^2  + p^2} - M$$
 ```python
 print(f'The kinetic energy of 2 GeV/c proton is {Ek(938,2000):.0f} MeV')
 ```
-
-    The kinetic energy of 2 GeV/c proton is 1271 MeV
-
 
 ## Export notebooks
