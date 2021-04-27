@@ -1,7 +1,7 @@
-repository: {user}/{lib_name}
+repository: dmitryhits/ProtonBeamTherapy 
 output: web
-topnav_title: {lib_name}
-site_title: {lib_name}
+topnav_title: ProtonBeamTherapy
+site_title: ProtonBeamTherapy
 company_name: Put your copyright information here
 description: Python macros for running simulations of the proton beam telescope
 # Set to false to disable KaTeX math
