@@ -14,7 +14,8 @@ import math
 from scipy import stats
 from scipy.stats import rv_continuous
 # import pylandau
-
+from matplotlib.pyplot import hist2d
+import matplotlib.colors as mcolors
 
 # Cell
 def get_edep_data(df, sensor=-1):
