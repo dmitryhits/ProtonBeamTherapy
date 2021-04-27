@@ -39,6 +39,13 @@ nb_path: "00_macro_tools.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
 <div class="output_wrapper">
 <div class="output">
 
@@ -46,7 +53,7 @@ nb_path: "00_macro_tools.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MacroWriter" class="doc_header"><code>class</code> <code>MacroWriter</code><a href="https://github.com/dmitryhits/gate_simulation/tree/master/gate_simulation/macrotools.py#L10" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MacroWriter</code>(<strong><code>macro_folder</code></strong>=<em><code>'mac'</code></em>, <strong><code>results_folder</code></strong>=<em><code>'results'</code></em>, <strong><code>logs_folder</code></strong>=<em><code>'logs'</code></em>, <strong><code>system_thickness</code></strong>=<em><code>1</code></em>, <strong><code>system_y_loc</code></strong>=<em><code>0</code></em>, <strong><code>sensor_material</code></strong>=<em><code>'Silicon'</code></em>, <strong><code>physics_list</code></strong>=<em><code>'QGSP_BERT_EMV'</code></em>)</p>
+<h2 id="MacroWriter" class="doc_header"><code>class</code> <code>MacroWriter</code><a href="" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MacroWriter</code>(<strong><code>macro_folder</code></strong>=<em><code>'mac'</code></em>, <strong><code>results_folder</code></strong>=<em><code>'results'</code></em>, <strong><code>logs_folder</code></strong>=<em><code>'logs'</code></em>, <strong><code>system_thickness</code></strong>=<em><code>1</code></em>, <strong><code>system_y_loc</code></strong>=<em><code>0</code></em>, <strong><code>sensor_material</code></strong>=<em><code>'Silicon'</code></em>, <strong><code>physics_list</code></strong>=<em><code>'QGSP_BERT_EMV'</code></em>)</p>
 </blockquote>
 
 </div>
@@ -62,6 +69,79 @@ nb_path: "00_macro_tools.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="MacroWriter.create_actors" class="doc_header"><code>MacroWriter.create_actors</code><a href="__main__.py#L182" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>MacroWriter.create_actors</code>()</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="MacroWriter.create_sensor" class="doc_header"><code>MacroWriter.create_sensor</code><a href="__main__.py#L24" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>MacroWriter.create_sensor</code>(<strong><code>n</code></strong>=<em><code>0</code></em>, <strong><code>x_length</code></strong>=<em><code>20</code></em>, <strong><code>z_length</code></strong>=<em><code>20</code></em>, <strong><code>thickness</code></strong>=<em><code>0.1</code></em>, <strong><code>x_loc</code></strong>=<em><code>0</code></em>, <strong><code>y_loc</code></strong>=<em><code>0</code></em>, <strong><code>z_loc</code></strong>=<em><code>0</code></em>, <strong><code>system</code></strong>=<em><code>'scanner'</code></em>)</p>
+</blockquote>
+<p>Compose a GATE macro for creating a sensor</p>
+<p>In the current implementation snesor is a flat plane perpendicular to the beam 
+which is by default in y direction
+thickness dimension is in mm
+all other dimensions are in cm</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="MacroWriter.create_macro_file" class="doc_header"><code>MacroWriter.create_macro_file</code><a href="__main__.py#L273" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>MacroWriter.create_macro_file</code>()</p>
+</blockquote>
+<p>creates the main macro file</p>
+<p>output: name the macro file, a dictionary containing the list of root file
+                            dictionary keys are 'trackers', 'hits', 'dose'</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
 
 </div>
     {% endraw %}

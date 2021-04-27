@@ -70,6 +70,8 @@ plt.scatter(thicknesses, np.array(tm)/np.array(etm))
 
 ---
 
+### Save the data to and read them back from csv
+
 Next two cells show some practice with saving and reading back csv files.
 
 ```python
@@ -96,7 +98,7 @@ plt.scatter(thickness_df['thickness'], thickness_df['trimmed mean']/thickness_df
 
 
 
-![png](docs/images/output_15_1.png)
+![png](docs/images/output_16_1.png)
 
 
 ---
@@ -127,6 +129,8 @@ print(f'Trimmed mean upper {round(tm_p, 2)}, Trimmed mean lower {round(tm_m, 2)}
 
 ---
 
+## Kinetic energy from momentum
+
 Recalculating the kinetic energy $E_k$ of the  particle mass  $M$ from its momentum $p$  according to:
 {% raw %}
 $$E_k = \sqrt{M^2  + p^2} - M$$
@@ -138,3 +142,5 @@ print(f'The kinetic energy of 2 GeV/c proton is {Ek(938,2000):.0f} MeV')
 
     The kinetic energy of 2 GeV/c proton is 1271 MeV
 
+
+## Export notebooks
