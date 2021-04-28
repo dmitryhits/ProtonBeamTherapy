@@ -29,6 +29,19 @@ nb_path: "01_analysis.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Dependencies">Dependencies<a class="anchor-link" href="#Dependencies"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -47,7 +60,72 @@ nb_path: "01_analysis.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_edep_data" class="doc_header"><code>get_edep_data</code><a href="https://github.com/dmitryhits/gate_simulation/tree/master/gate_simulation/analysis.py#L21" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_edep_data</code>(<strong><code>df</code></strong>, <strong><code>sensor</code></strong>=<em><code>-1</code></em>)</p>
+<h4 id="find_max_nonzero" class="doc_header"><code>find_max_nonzero</code><a href="https://github.com/dmitryhits/gate_simulation/tree/master/ProtonBeamTherapy/analysis.py#L21" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>find_max_nonzero</code>(<strong><code>array_hist</code></strong>)</p>
+</blockquote>
+<p>returns an upper boundary of the continuos non-zero bins</p>
+<p>input a histogram array output from plt.hist</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="find_range" class="doc_header"><code>find_range</code><a href="https://github.com/dmitryhits/gate_simulation/tree/master/ProtonBeamTherapy/analysis.py#L40" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>find_range</code>(<strong><code>param</code></strong>)</p>
+</blockquote>
+<p>removes a tail in the upper range of the histogram</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="get_edep_data" class="doc_header"><code>get_edep_data</code><a href="https://github.com/dmitryhits/gate_simulation/tree/master/ProtonBeamTherapy/analysis.py#L52" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_edep_data</code>(<strong><code>df</code></strong>, <strong><code>sensor</code></strong>=<em><code>-1</code></em>)</p>
 </blockquote>
 <p>returns an array of energies deposited in each event (keV)</p>
 
@@ -79,7 +157,7 @@ nb_path: "01_analysis.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_df_subentry2" class="doc_header"><code>get_df_subentry2</code><a href="https://github.com/dmitryhits/gate_simulation/tree/master/gate_simulation/analysis.py#L34" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_df_subentry2</code>(<strong><code>root_file_name</code></strong>)</p>
+<h4 id="get_df_subentry2" class="doc_header"><code>get_df_subentry2</code><a href="https://github.com/dmitryhits/gate_simulation/tree/master/ProtonBeamTherapy/analysis.py#L65" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_df_subentry2</code>(<strong><code>root_file_name</code></strong>)</p>
 </blockquote>
 <p>returns a dataframe that contains only subentry 2 data</p>
 <p>This subentry seems to contain all the relevant information</p>
@@ -94,13 +172,12 @@ nb_path: "01_analysis.ipynb"
 </div>
     {% endraw %}
 
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Example-showing-energy-deposition-with-3-sensors">Example showing energy deposition with 3 sensors<a class="anchor-link" href="#Example-showing-energy-deposition-with-3-sensors"> </a></h2>
 </div>
-    {% endraw %}
-
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -109,40 +186,8 @@ nb_path: "01_analysis.ipynb"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">get_df_subentry2</span><span class="p">(</span><span class="s1">&#39;results/TrackerHits.root&#39;</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">edep</span> <span class="o">=</span> <span class="n">get_edep_data</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">sensor</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">edep</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span>
+<span class="n">edep</span> <span class="o">=</span> <span class="n">get_edep_data</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">sensor</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">edep</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">get_edep_data</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">sensor</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">get_edep_data</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">sensor</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span>
 </pre></div>
@@ -567,68 +612,6 @@ nb_path: "01_analysis.ipynb"
 
 </div>
 </div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="find_max_nonzero" class="doc_header"><code>find_max_nonzero</code><a href="https://github.com/dmitryhits/gate_simulation/tree/master/gate_simulation/analysis.py#L45" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>find_max_nonzero</code>(<strong><code>array_hist</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="find_range" class="doc_header"><code>find_range</code><a href="https://github.com/dmitryhits/gate_simulation/tree/master/gate_simulation/analysis.py#L60" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>find_range</code>(<strong><code>param</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
