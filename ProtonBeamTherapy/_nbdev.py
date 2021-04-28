@@ -14,8 +14,8 @@ index = {"MacroWriter": "00_macro_tools.ipynb",
 modules = ["macrotools.py",
            "analysis.py"]
 
-doc_url = "https://dmitryhits.github.io/gate_simulation/"
+doc_url = "https://dmitryhits.github.io/ProtonBeamTherapy/"
 
-git_url = "https://github.com/dmitryhits/gate_simulation/tree/master/"
+git_url = "https://github.com/dmitryhits/ProtonBeamTherapy/tree/master/"
 
 def custom_doc_links(name): return None

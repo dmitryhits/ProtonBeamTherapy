@@ -1,5 +1,5 @@
 {
-  "gate_simulation": {
+  "ProtonBeamTherapy": {
     "Overview": "/",
     "Tools to create macros for GATE simulations": "macro_tools.html",
     "Tools to analyze the results of Gate simulations": "analysis.html",
