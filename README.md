@@ -2,7 +2,7 @@
 > This project will have tools to aid a simulation and optimizatin of the proton beam tracker/calorimeter in application for determining the corrections to the proton stopping powers for treatment planning.
 
 
-![image.png](media/gate_simulation.png "Gate Simulation")
+![image.png](nbs/media/gate_simulation.png "Gate Simulation")
 
 ## Prerequisites
 
@@ -53,55 +53,12 @@ for t in thicknesses:
         # print(f'Trimmed mean {round(tm, 2)}, Error on trimmed mean: {round(etm, 2)}, SNR: {round(tm/etm, 2)}')
 ```
 
-    system thickness: 0.6
-    y location of sensor 0 is: 0.25
-    system created with: thickness: 0.6 at loc: -21
-    system thickness: 0.7
-    y location of sensor 0 is: 0.24999999999999997
-    system created with: thickness: 0.7 at loc: -21
-    system thickness: 0.8
-    y location of sensor 0 is: 0.25
-    system created with: thickness: 0.8 at loc: -21
-    system thickness: 0.9
-    y location of sensor 0 is: 0.25
-    system created with: thickness: 0.9 at loc: -21
-    system thickness: 1.0
-    y location of sensor 0 is: 0.25
-    system created with: thickness: 1.0 at loc: -21
-    system thickness: 1.1
-    y location of sensor 0 is: 0.25000000000000006
-    system created with: thickness: 1.1 at loc: -21
-    system thickness: 1.2000000000000002
-    y location of sensor 0 is: 0.25000000000000006
-    system created with: thickness: 1.2000000000000002 at loc: -21
-    system thickness: 1.3
-    y location of sensor 0 is: 0.25
-    system created with: thickness: 1.3 at loc: -21
-    system thickness: 1.4
-    y location of sensor 0 is: 0.24999999999999994
-    system created with: thickness: 1.4 at loc: -21
-    system thickness: 1.5
-    y location of sensor 0 is: 0.25
-    system created with: thickness: 1.5 at loc: -21
-
-
 20 phatom layers each 1 cm thick, the two outer layers had skull as their material, the 18 inner ones have water as the material. The beam was 250 MeV proton pencil beam. The sensor thickness was varied between 100 and 1000 $\mu$m
 
 ```python
 import matplotlib.pyplot as plt
 plt.scatter(thicknesses, np.array(tm)/np.array(etm))
 ```
-
-
-
-
-    <matplotlib.collections.PathCollection at 0x7fa760ce1d00>
-
-
-
-
-![png](docs/images/output_11_1.png)
-
 
 ---
 
@@ -127,17 +84,6 @@ thickness_df = pandas.read_csv('thickness.csv')
 plt.scatter(thickness_df['thickness'], thickness_df['trimmed mean']/thickness_df['error_on_trimmed_mean'])
 ```
 
-
-
-
-    <matplotlib.collections.PathCollection at 0x7fa747cba040>
-
-
-
-
-![png](docs/images/output_17_1.png)
-
-
 ---
 
 Study of the trimmed mean. I have checked that the error on the trimmed mean is larger than the error arising from uncertainty on the upper trim value. The upper trim value of 2 standard deviation from the untrimmed mean seems to give a reasonable result.
@@ -155,11 +101,6 @@ print(f'Trimmed mean upper {round(tm_p, 2)}, Trimmed mean lower {round(tm_m, 2)}
 
 #print(stats.mode(np.round(edep, 0)))
 ```
-
-    Mean:        1152.969970703125,       Error on mean: 11.57, SNR: 99.67
-    Trimmed mean 1047.13, Error on trimmed mean: 2.89, SNR: 362.09
-    Trimmed mean upper 1047.39, Trimmed mean lower 1046.61 difference: 0.78, SNR: 1338.37
-
 
 ---
 

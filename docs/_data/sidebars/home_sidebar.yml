@@ -19,6 +19,6 @@ entries:
       title: Various scanners
       url: scanners.html
     output: web
-    title: gate_simulation
+    title: ProtonBeamTherapy
   output: web
   title: Sidebar

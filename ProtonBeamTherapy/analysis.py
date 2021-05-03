@@ -42,10 +42,13 @@ def find_range(param):
     array_hist = plt.hist(param, bins=100)
     upper_limit = find_max_nonzero(array_hist)
     ret = -1
-    while upper_limit:
+    for _ in range(10):
+        print(f'upper limit: {upper_limit}')
         ret = upper_limit
         array_hist = plt.hist(param[param < upper_limit], bins=100)
         upper_limit = find_max_nonzero(array_hist)
+        if ret == upper_limit:
+            break
     return ret
 
 # Cell
