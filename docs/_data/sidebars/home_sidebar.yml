@@ -18,6 +18,12 @@ entries:
     - output: web,pdf
       title: Various scanners
       url: scanners.html
+    - output: web,pdf
+      title: Beam energy scan
+      url: analysis0.html
+    - output: web,pdf
+      title: First layer thickness scan
+      url: analysis1.html
     output: web
     title: ProtonBeamTherapy
   output: web

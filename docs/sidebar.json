@@ -3,6 +3,8 @@
     "Overview": "/",
     "Tools to create macros for GATE simulations": "macro_tools.html",
     "Tools to analyze the results of Gate simulations": "analysis.html",
-    "Various scanners": "scanners.html"
+    "Various scanners": "scanners.html",
+    "Beam energy scan": "analysis0.html",
+    "First layer thickness scan": "analysis1.html"
   }
 }
