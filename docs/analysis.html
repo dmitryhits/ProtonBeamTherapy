@@ -172,6 +172,102 @@ nb_path: "nbs/01_analysis.ipynb"
 </div>
     {% endraw %}
 
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ph_tree</span> <span class="o">=</span> <span class="n">rt</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;../results/tracker_2021May03_141349_19.root:PhaseSpace&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ph_df</span> <span class="o">=</span> <span class="n">ak</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(</span><span class="n">ph_tree</span><span class="o">.</span><span class="n">arrays</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Ekin_proton</span> <span class="o">=</span> <span class="n">ph_df</span><span class="p">[</span><span class="n">ph_df</span><span class="p">[</span><span class="s1">&#39;ParticleName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;proton&#39;</span><span class="p">][</span><span class="s1">&#39;Ekine&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Ekin_proton</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;AxesSubplot:&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Example-showing-energy-deposition-with-3-sensors">Example showing energy deposition with 3 sensors<a class="anchor-link" href="#Example-showing-energy-deposition-with-3-sensors"> </a></h2>
