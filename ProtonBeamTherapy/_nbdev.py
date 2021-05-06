@@ -9,7 +9,9 @@ index = {"MacroWriter": "00_macrotools.ipynb",
          "find_max_nonzero": "01_analysis.ipynb",
          "find_range": "01_analysis.ipynb",
          "get_edep_data": "01_analysis.ipynb",
-         "get_df_subentry2": "01_analysis.ipynb"}
+         "get_df_subentry2": "01_analysis.ipynb",
+         "get_phasespace_df": "01_analysis.ipynb",
+         "get_Ekin": "01_analysis.ipynb"}
 
 modules = ["macrotools.py",
            "analysis.py"]
