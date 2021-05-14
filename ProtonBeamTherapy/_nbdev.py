@@ -11,7 +11,8 @@ index = {"MacroWriter": "00_macrotools.ipynb",
          "get_edep_data": "01_analysis.ipynb",
          "get_df_subentry2": "01_analysis.ipynb",
          "get_phasespace_df": "01_analysis.ipynb",
-         "get_Ekin": "01_analysis.ipynb"}
+         "get_Ekin": "01_analysis.ipynb",
+         "extract_dose": "01_analysis.ipynb"}
 
 modules = ["macrotools.py",
            "analysis.py"]

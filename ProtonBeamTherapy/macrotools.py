@@ -96,9 +96,11 @@ class MacroWriter:
         which in the current implementation is a flat box perpendicular to beam which is in y direction
         all dimensions are in cm
         '''
-        results_path = path.join(self.results, f'tracker_{self.timestamp}_{n}.root')
+        tracker_results_path = path.join(self.results, f'tracker_{self.timestamp}_{n}.root')
+        dose_results_path = path.join(self.results, f'dose_{self.timestamp}_{n}.txt')
 
-        self.results_files['trackers'].append(results_path)
+        self.results_files['trackers'].append(tracker_results_path)
+        self.results_files['dose'].append(dose_results_path)
         if material == 'Skull':
             color = 'yellow'
 
@@ -125,12 +127,21 @@ class MacroWriter:
         # attached actor to the box{n}
         #***************************************************************
         /gate/actor/addActor PhaseSpaceActor         tracker{n}
-        /gate/actor/tracker{n}/save                     {results_path}
+        /gate/actor/tracker{n}/save                     {tracker_results_path}
         /gate/actor/tracker{n}/attachTo                 box{n}
         /gate/actor/tracker{n}/enableNuclearFlag          true
         /gate/actor/tracker{n}/enableProductionProcess  false
         #/gate/actor/tracker{n}/useVolumeFrame           true
         /gate/actor/tracker{n}/storeOutgoingParticles true
+
+        /gate/actor/addActor DoseActor             dose{n}
+        /gate/actor/dose{n}/save                   {dose_results_path}
+        /gate/actor/dose{n}/attachTo               box{n}
+        /gate/actor/dose{n}/stepHitType            random
+        /gate/actor/dose{n}/setResolution          1 10 1
+        /gate/actor/dose{n}/enableDose             true
+        #/gate/actor/dose{n}/enableUncertaintyDose  true
+        #/gate/actor/dose{n}/enableNumberOfHits     true
         """
         self.geometry_dict[f'layer{n}'] = geometry_lines
         self.physics_dict[f'layer{n}'] = physics_lines
@@ -332,10 +343,10 @@ class MacroWriter:
         with open(macro_name, 'w') as f:
             f.write(lines)
 
-        return macro_name, self.results_files
+        return macro_name, self.results_files, self.timestamp
 
 # Cell
-def create_all(n_phantom_layers = 20, phantom_layer_thickness = [1]*20, phantom_material = 'Water', beam_energy = 250,
+def create_all(n_phantom_layers = 21, phantom_layer_thickness = [1]*21, phantom_material = 'Water', beam_energy = 250,
                distance_to_system = 1, system_thickness = 1, n_sensors = 1, sensor_pitch = 0.5, sensor_thickness=0.5):
     """sets parameters for phantom and system geometries"""
     phantom_thickness = sum(phantom_layer_thickness)
@@ -347,8 +358,12 @@ def create_all(n_phantom_layers = 20, phantom_layer_thickness = [1]*20, phantom_
     y_loc = 10
     for layer in range(n_phantom_layers):
         phantom_material = 'Water'
+        # the parameters of the particles are recorded at the exit from the layer
+        # the Air layer is added to get parameters at the entrance to the real phantom layer
+        if layer == 0:
+            phantom_material = 'Air'
         # set material to Skull for the first and the last layer
-        if layer == 0 or layer == n_phantom_layers - 1:
+        elif layer == 1 or layer == n_phantom_layers - 1:
             phantom_material = 'Skull'
         # layers start from 10 and extend in the negative y direction
         y_loc -= phantom_layer_thickness[layer]
