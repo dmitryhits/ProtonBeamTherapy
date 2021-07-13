@@ -22,22 +22,29 @@ class MacroWriter:
         self.geometry_dict = {}
         self.physics_dict = {}
         self.actor_dict = {}
-        self.no_system = True
         self.system_y_loc = system_y_loc
         self.system_thickness = system_thickness
         self.results_files = {key:[] for key in ['trackers', 'hits', 'dose']}
         self.timestamp = strftime("%Y%b%d_%H%M%S")
+        self.n_phantom_layers = 0
         self.beam_created = False
+        self.no_system = True
 
-    def create_sensor(self, n=0, x_length=20, z_length=20, thickness=0.1, x_loc=0, y_loc=0, z_loc=0,
+    def print_info(self):
+        print(f'Info for the system created on {self.timestamp}...')
+        print(f'Number of phantom layers: {self.n_phantom_layers}')
+        for layer in range(self.n_phantom_layers):
+            print()
+
+
+    def create_sensor(self, n=0, x_length=200, z_length=200, thickness=0.1, x_loc=0, y_loc=0, z_loc=0,
                   system='scanner'):
 
         """Compose a GATE macro for creating a sensor
 
-        In the current implementation snesor is a flat plane perpendicular to the beam
-        which is by default in y direction
-        thickness dimension is in mm
-        all other dimensions are in cm"""
+        In the current implementation sensor is a flat plane perpendicular to the beam
+        the beam is along y direction
+        all dimensions are in mm"""
 
         # move starting point from the center to the top_surface of the system
         # print(f'system thickness: {self.system_thickness}')
@@ -55,11 +62,11 @@ class MacroWriter:
         #sensor
         /gate/scanner/daughters/name sensor{n}
         /gate/{system}/daughters/insert box
-        /gate/sensor{n}/geometry/setXLength      {x_length} cm
+        /gate/sensor{n}/geometry/setXLength      {x_length} mm
         /gate/sensor{n}/geometry/setYLength      {round(thickness,3)} mm
-        /gate/sensor{n}/geometry/setZLength      {z_length} cm
+        /gate/sensor{n}/geometry/setZLength      {z_length} mm
         /gate/sensor{n}/setMaterial {self.sensor_material}
-        /gate/sensor{n}/placement/setTranslation {x_loc} {y_loc} {z_loc} cm
+        /gate/sensor{n}/placement/setTranslation {x_loc} {y_loc} {z_loc} mm
         /gate/sensor{n}/vis/setVisible 1
         /gate/sensor{n}/vis/setColor magenta
         /gate/systems/{system}/level1/attach sensor{n}
@@ -72,15 +79,15 @@ class MacroWriter:
         self.geometry_dict[f'sensor{n}'] = geometry_lines
         self.physics_dict[f'sensor{n}'] = physics_lines
 
-    def create_system(self, x_length=20, z_length=20, thickness=1, x_loc=0, y_loc=0, z_loc=0,
+    def create_system(self, x_length=200, z_length=200, thickness=1, x_loc=0, y_loc=0, z_loc=0,
                       system='scanner'):
         system_lines = f'''
         /gate/world/daughters/name              {system}
         /gate/world/daughters/insert            box
-        /gate/scanner/geometry/setXLength      {x_length} cm
-        /gate/scanner/geometry/setYLength      {thickness} cm
-        /gate/scanner/geometry/setZLength      {z_length} cm
-        /gate/scanner/placement/setTranslation {x_loc} {y_loc} {z_loc} cm
+        /gate/scanner/geometry/setXLength      {x_length} mm
+        /gate/scanner/geometry/setYLength      {thickness} mm
+        /gate/scanner/geometry/setZLength      {z_length} mm
+        /gate/scanner/placement/setTranslation {x_loc} {y_loc} {z_loc} mm
         /gate/scanner/setMaterial Air
         /gate/scanner/vis/setVisible 1
         /gate/scanner/vis/setColor cyan
@@ -88,13 +95,16 @@ class MacroWriter:
         '''
         return system_lines
 
-    def create_phantom_layer(self, n=0, x_length=20, z_length=20, thickness=1, x_loc=0, y_loc=0, z_loc=0,
+    def create_phantom_layer(self, n=0, x_length=200, z_length=200, thickness=1, x_loc=0, y_loc=0, z_loc=0,
                              material='Water', color='blue'):
         '''
         Compose a GATE macro for creating a phantom box.
 
         which in the current implementation is a flat box perpendicular to beam which is in y direction
         all dimensions are in cm
+
+        two actors are currently added to this volume
+        PhaseSpaceActor and DoseActor
         '''
         tracker_results_path = path.join(self.results, f'tracker_{self.timestamp}_{n}.root')
         dose_results_path = path.join(self.results, f'dose_{self.timestamp}_{n}.txt')
@@ -108,10 +118,10 @@ class MacroWriter:
         #phatom box {n}
         /gate/world/daughters/name              box{n}
         /gate/world/daughters/insert            box
-        /gate/box{n}/geometry/setXLength      {x_length} cm
-        /gate/box{n}/geometry/setYLength      {thickness} cm
-        /gate/box{n}/geometry/setZLength      {z_length} cm
-        /gate/box{n}/placement/setTranslation {x_loc} {y_loc} {z_loc} cm
+        /gate/box{n}/geometry/setXLength      {x_length} mm
+        /gate/box{n}/geometry/setYLength      {thickness} mm
+        /gate/box{n}/geometry/setZLength      {z_length} mm
+        /gate/box{n}/placement/setTranslation {x_loc} {y_loc} {z_loc} mm
         /gate/box{n}/setMaterial {material}
         /gate/box{n}/vis/setVisible 1
         /gate/box{n}/vis/setColor {color}
@@ -184,9 +194,9 @@ class MacroWriter:
         /gate/geometry/setMaterialDatabase ../data/GateMaterials.db
 
         # World
-        /gate/world/geometry/setXLength 50 cm
-        /gate/world/geometry/setYLength 50 cm
-        /gate/world/geometry/setZLength 50 cm
+        /gate/world/geometry/setXLength 1000 mm
+        /gate/world/geometry/setYLength 1000 mm
+        /gate/world/geometry/setZLength 1000 mm
         /gate/world/setMaterial Air
         '''
 
@@ -347,7 +357,8 @@ class MacroWriter:
 
 # Cell
 def create_all(n_phantom_layers = 21, phantom_layer_thickness = [1]*21, phantom_material = 'Water', beam_energy = 250,
-               distance_to_system = 1, system_thickness = 1, n_sensors = 1, sensor_pitch = 0.5, sensor_thickness=0.5):
+               distance_to_system = 1, system_thickness = 1, n_sensors = 1, sensor_pitch = 1, sensor_thickness=0.5,
+              roc_thickness=0.5):
     """sets parameters for phantom and system geometries"""
     phantom_thickness = sum(phantom_layer_thickness)
     system_thickness = (sensor_thickness + sensor_pitch) * n_sensors
@@ -369,9 +380,15 @@ def create_all(n_phantom_layers = 21, phantom_layer_thickness = [1]*21, phantom_
         y_loc -= phantom_layer_thickness[layer]
         my_macro.create_phantom_layer(n=layer, thickness=phantom_layer_thickness[layer], y_loc=y_loc,
                                      material=phantom_material)
+    #  create system with sensors and readout chips
     for i_sensor in range(n_sensors):
-        my_macro.create_sensor(n=i_sensor, y_loc= -(sensor_pitch + sensor_thickness) * i_sensor,
+        sensor_loc = -(sensor_pitch + sensor_thickness) * i_sensor
+        roc_loc = sensor_loc - sensor_thickness/2 - roc_thickness/2
+        print(f'sensor {sensor_loc} - roc: {roc_loc}')
+        my_macro.create_sensor(n=i_sensor, y_loc= sensor_loc,
                                thickness=sensor_thickness)
+        my_macro.create_sensor(n=i_sensor + 100, y_loc= roc_loc,
+                               thickness=roc_thickness)
     my_macro.create_beam(energy=beam_energy)
     return my_macro.create_macro_file()
 
